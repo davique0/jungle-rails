@@ -7,7 +7,7 @@ RSpec.describe Product, type: :model do
       @product = Product.new(name: 'Test Plant', price: 25, quantity: 45, category: @category)
     end
 
-    it 'should save successfully with all four fields set' do
+    it 'should save successfully with all four fields filled' do
       expect(@product.save).to be true
     end
 
