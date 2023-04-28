@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'Validations' do
+
     before(:each) do
       @user = User.new(first_name: 'John', last_name: 'Doe', email: 'test@test.com', password: '12345678', password_confirmation: '12345678')
-     
     end     
 
     it 'should save succesfully with all four fields filled' do
@@ -47,6 +47,30 @@ RSpec.describe User, type: :model do
       @user.password = '1234567'
       expect(@user.save).to be false
     end
+  end
 
+  describe '.authenticate_with_credentials' do
+
+    before(:each) do
+      @user = User.new(first_name: 'John', last_name: 'Doe', email: 'test@test.com', password: '12345678', password_confirmation: '12345678')
+      @user.save
+
+    end
+
+    it 'should return an instance of user if authentication is succesful' do
+      expect(User.authenticate_with_credentials('test@test.com', '12345678')).to eq @user
+    end
+
+    it 'should return nil if password is wrong' do
+      expect(User.authenticate_with_credentials('test@test.com', '987654321')).to eq nil
+    end
+
+    it 'should succesfully authenticate when user enter spaces before or after email' do
+      expect(User.authenticate_with_credentials('  test@test.com  ', '12345678')).to eq @user
+    end
+
+    it 'should succesfully authenticate even when email has upper case' do
+      expect(User.authenticate_with_credentials('tEsT@tESt.com', '12345678')).to eq @user
+    end
   end
 end

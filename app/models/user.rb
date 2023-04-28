@@ -12,5 +12,5 @@ class User < ApplicationRecord
         else
             nil
         end
-    ends
+    end
 end
